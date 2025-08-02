@@ -2,29 +2,37 @@ import fileUploadModel from '../models/fileUploadModel.js';
 import { streamUpload } from '../utils/streamUpload.js';
 
 // === SINGLE UPLOAD ===
-// Example for single file upload
 export const uploadSingleFile = async (req, res) => {
   try {
     const { title, desc, creator } = req.body;
-    if (!req.file) return res.status(400).json({ message: "File is required" });
 
-    const thumbnailPic = req.file.path;
-    const mainPic = thumbnailPic; // or handle differently if you want
+    // For single file
+    const thumbnailPic = req.file?.path;
 
-    if (!title || !desc || !creator)
-      return res.status(400).json({ message: "Title, description and creator are required" });
+    // For multi files (example: fields 'thumbnailPic' and 'mainPic')
+    const thumbnailPicFromFields = req.files?.thumbnailPic?.[0]?.path;
+    const mainPicFromFields = req.files?.mainPic?.[0]?.path;
 
-    const newUpload = new fileUploadModel({
+    if (!title || !desc || !creator || (!thumbnailPic && !thumbnailPicFromFields) || !mainPicFromFields) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const newFileUpload = new fileUploadModel({
       title,
       desc,
-      thumbnailPic,
-
+      thumbnailPic: thumbnailPic || thumbnailPicFromFields,
+      mainPic: mainPicFromFields,
+      creator,
     });
 
-    await newUpload.save();
-    res.status(201).json({ message: "File uploaded successfully", fileUpload: newUpload });
+    await newFileUpload.save();
+
+    res.status(201).json({
+      message: "File uploaded successfully",
+      fileUpload: newFileUpload,
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Upload error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
