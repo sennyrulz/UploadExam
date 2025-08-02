@@ -6,20 +6,20 @@ import {
 } from "../utils/multer.js";
 
 import {
-  uploadSingleFile,
-  uploadArrayFiles,
-  uploadMultiFiles,
+  createPost as createFileUpload,
   getFileUploads,
   getFileUploadById,
-} from "../controllers/fileUploadController.js";
+} from "../controllers/postController.js";
+// import upload from  "../utils/multer.js";
+
 
 const route = express.Router();
 
 route.get("/", getFileUploads);
 route.get("/:id", getFileUploadById);
 
-route.post("/upload-single", singleUploadMiddleware, uploadSingleFile);
-route.post("/upload-array", arrayUploadMiddleware, uploadArrayFiles);
-route.post("/upload-multi", multiUploadMiddleware, uploadMultiFiles);
+route.post("/upload-single", singleUploadMiddleware, createFileUpload);
+route.post("/upload-array", arrayUploadMiddleware, createFileUpload);
+route.post("/upload-multi", multiUploadMiddleware, createFileUpload);
 
 export default route;

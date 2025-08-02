@@ -5,8 +5,8 @@ import cloudinary from "./cloudinary.js";
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: "uploads",
-    allowed_formats: ["jpg", "png", "jpeg"],
+    folder: "fileUploads",
+    allowed_formats: ["jpg", "png", "jpeg", "pdf", "mp4", "mp3"],
   },
 });
 

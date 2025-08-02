@@ -1,8 +1,9 @@
 //Mongoose connection
+import express, { urlencoded } from "express";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 import fileUploadRoute from "./routes/fileUploadRoute.js";
-import { urlencoded } from "express";
-import express from "express";
+
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -14,12 +15,11 @@ app.use(express.text({ type: ["application/javascript", "text/plain", "text/html
 app.use(express.json());
 
 // Routes
-app.use("/api/upload", fileUploadRoute);
+app.use("/api", fileUploadRoute);
 
 
 // Mongoose handling middleware
-
-const MONGO_URL = process.env.MONGO_URL || "mongodb://localhost:27017/mydatabase";
+const MONGO_URL = process.env.MONGO_URL || "mongodb://localhost:27017/mydatabase" || "https://uploadexam.onrender.com";
 mongoose
     .connect(MONGO_URL)
     .then(() => console.log("MongoDB connected"))
