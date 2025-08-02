@@ -15,13 +15,13 @@ const fileUploadSchema = new mongoose.Schema(
             required: true
         },
         mainPic:{
-            type:String,
+            type:[String],
             required:true
         },
         creator:{
             type:mongoose.Types.ObjectId,
             ref: "User",
-            required: true
+            // required: true
         },
     },
         { timestamps: true }
